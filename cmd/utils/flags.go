@@ -1263,7 +1263,7 @@ func SetEthConfig(ctx *cli.Context, stack *node.Node, cfg *eth.Config) {
 		if !ctx.GlobalIsSet(NetworkIdFlag.Name) {
 			cfg.NetworkId = 3
 		}
-		cfg.Genesis = core.DefaultTestnetGenesisBlock()
+		cfg.Genesis = core.DefaultCallistoTestnetGenesisBlock()
 	case ctx.GlobalBool(RinkebyFlag.Name):
 		if !ctx.GlobalIsSet(NetworkIdFlag.Name) {
 			cfg.NetworkId = 4
@@ -1428,7 +1428,7 @@ func MakeGenesis(ctx *cli.Context) *core.Genesis {
 	var genesis *core.Genesis
 	switch {
 	case ctx.GlobalBool(TestnetFlag.Name):
-		genesis = core.DefaultTestnetGenesisBlock()
+		genesis = core.DefaultCallistoTestnetGenesisBlock()
 	case ctx.GlobalBool(RinkebyFlag.Name):
 		genesis = core.DefaultRinkebyGenesisBlock()
 	case ctx.GlobalBool(GoerliFlag.Name):
