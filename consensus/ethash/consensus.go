@@ -48,7 +48,8 @@ var (
 	CLOHF1StakeReward         = new(big.Int).Mul(big.NewInt(120), big.NewInt(1e+18)) // Block reward in wei for successfully mining a block upward for Callisto Network
 	CLOTreasuryAddress 		  = common.HexToAddress("0x74682Fc32007aF0b6118F259cBe7bCCC21641600")
 	CLOStakeAddress			  = common.HexToAddress("0x3c06f218Ce6dD8E2c535a8925A2eDF81674984D9")
-	CLOHF1StakeAddress        = common.HexToAddress("0x3c06f218Ce6dD8E2c535a8925A2eDF81674984D9")
+	CLOHF1StakeAddress        = common.HexToAddress("0xd813419749b3c2cdc94a2f9cfcf154113264a9d6")
+	CLOHF1TestnetStakeAddress = common.HexToAddress("0xa6199a446edd7a92df19a7c8e46f2fc3da15b3fa")
 	maxUncles                 = 2                 // Maximum number of uncles allowed in a single block
 	allowedFutureBlockTime    = 15 * time.Second  // Max time from current time allowed for blocks, before they're considered future blocks
 
@@ -564,7 +565,8 @@ var accumulateRewards func(config *params.ChainConfig, state *state.StateDB, hea
 // Prepare implements consensus.Engine, initializing the difficulty field of a
 // header to conform to the ethash protocol. The changes are done inline.
 func (ethash *Ethash) Prepare(chain consensus.ChainReader, header *types.Header) error {
-	if chain.GetHeaderByNumber(0).Hash() == params.CallistoGenesisHash {
+	genesisHash := chain.GetHeaderByNumber(0).Hash()
+	if  genesisHash == params.CallistoGenesisHash || genesisHash == params.CallistoTestnetGenesisHash {
 		accumulateRewards = callistoAccumulateRewards
 	}
 
@@ -649,10 +651,11 @@ func defaultAccumulateRewards(config *params.ChainConfig, state *state.StateDB, 
 func callistoAccumulateRewards(config *params.ChainConfig, state *state.StateDB, header *types.Header, uncles []*types.Header) {
 	// Select the correct block reward based on chain progression
 	blockReward := CLOMinerReward
-	clotreasury := CLOTreasuryReward
-	clostake := CLOStakeReward
-	clohf1treasury := CLOHF1TreasuryReward
-	clohf1stake := CLOHF1StakeReward
+	cloHF1StakeAddress := CLOHF1StakeAddress
+
+	if config.ChainID.Cmp(big.NewInt(7929)) == 0 {
+		cloHF1StakeAddress = CLOHF1TestnetStakeAddress
+	}
 
 	// Accumulate the rewards for the miner and any included uncles
 	reward := new(big.Int).Set(blockReward)
@@ -670,11 +673,11 @@ func callistoAccumulateRewards(config *params.ChainConfig, state *state.StateDB,
 	// Activate Callisto hardfork
 	if config.IsCLOHF1(header.Number) {
 		state.AddBalance(header.Coinbase, reward)
-		state.AddBalance(CLOTreasuryAddress, clohf1treasury)
-		state.AddBalance(CLOHF1StakeAddress, clohf1stake)
+		state.AddBalance(CLOTreasuryAddress, CLOHF1TreasuryReward)
+		state.AddBalance(cloHF1StakeAddress, CLOHF1StakeReward)
 	} else {
 		state.AddBalance(header.Coinbase, reward)
-		state.AddBalance(CLOTreasuryAddress, clotreasury)
-		state.AddBalance(CLOStakeAddress, clostake)
+		state.AddBalance(CLOTreasuryAddress, CLOTreasuryReward)
+		state.AddBalance(CLOStakeAddress, CLOStakeReward)
 	}
 }
