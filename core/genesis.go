@@ -162,7 +162,7 @@ func SetupGenesisBlockWithOverride(db ethdb.Database, genesis *Genesis, constant
 	if (stored == common.Hash{}) {
 		if genesis == nil {
 			log.Info("Writing default main-net genesis block")
-			genesis = DefaultCallistoGenesisBlock()
+			genesis = DefaultParaxialGenesisBlock()
 		} else {
 			log.Info("Writing custom genesis block")
 		}
@@ -193,7 +193,7 @@ func SetupGenesisBlockWithOverride(db ethdb.Database, genesis *Genesis, constant
 	// Special case: don't change the existing config of a non-mainnet chain if no new
 	// config is supplied. These chains would get AllProtocolChanges (and a compat error)
 	// if we just continued here.
-	if genesis == nil && stored != params.CallistoGenesisHash {
+	if genesis == nil && stored != params.ParaxialGenesisHash {
 		return storedcfg, stored, nil
 	}
 
@@ -215,8 +215,8 @@ func (g *Genesis) configOrDefault(ghash common.Hash) *params.ChainConfig {
 	switch {
 	case g != nil:
 		return g.Config
-	case ghash == params.CallistoGenesisHash:
-		return params.CallistoChainConfig
+	case ghash == params.ParaxialGenesisHash:
+		return params.ParaxialChainConfig
 	case ghash == params.TestnetGenesisHash:
 		return params.TestnetChainConfig
 	default:
@@ -315,33 +315,33 @@ func DefaultGenesisBlock() *Genesis {
 	}
 }
 
-// DefaultCallistoGenesisBlock
-func DefaultCallistoGenesisBlock() *Genesis {
+// DefaultParaxialGenesisBlock
+func DefaultParaxialGenesisBlock() *Genesis {
 	return &Genesis{
-		Config:     params.CallistoChainConfig,
+		Config:     params.ParaxialChainConfig,
 		ExtraData:  hexutil.MustDecode("0x0000000000000000000000000000000000000000000000000000000000000000"),
 		GasLimit:   10400000,
 		Difficulty: big.NewInt(524288),
 		Timestamp:  1519622213,
-		Nonce:      0,
-		Coinbase:   common.HexToAddress("0xc3F70b10CE5EC4aA47ce44Eb0B7900A883cd45Dd"),
+		Nonce:      32,
+		Coinbase:   common.HexToAddress("0xa54ee4a7ab23068529b7fec588ec3959e384a816"), // me
 		Mixhash:    common.HexToHash("0x0000000000000000000000000000000000000000000000000000000000000000"),
-		Alloc:      decodePrealloc(callistoAllocData),
+		Alloc:      decodePrealloc(paraxialAllocData),
 	}
 }
 
-// DefaultCallistoTestnetGenesisBlock
-func DefaultCallistoTestnetGenesisBlock() *Genesis {
+// DefaultParaxialTestnetGenesisBlock
+func DefaultParaxialTestnetGenesisBlock() *Genesis {
 	return &Genesis{
-		Config:     params.CallistoChainTestnetConfig,
+		Config:     params.ParaxialChainTestnetConfig,
 		ExtraData:  hexutil.MustDecode("0x0000000000000000000000000000000000000000000000000000000000000000"),
 		GasLimit:   10400000,
 		Difficulty: big.NewInt(524288),
 		Timestamp:  1519622213,
-		Nonce:      0,
-		Coinbase:   common.HexToAddress("0xc3F70b10CE5EC4aA47ce44Eb0B7900A883cd45Dd"),
+		Nonce:      32,
+		Coinbase:   common.HexToAddress("0xa54ee4a7ab23068529b7fec588ec3959e384a816"),
 		Mixhash:    common.HexToHash("0x0000000000000000000000000000000000000000000000000000000000000000"),
-		Alloc:      coldStakingAlloc(decodePrealloc(callistoTestnetAllocData)),
+		Alloc:      coldStakingAlloc(decodePrealloc(paraxialTestnetAllocData)),
 	}
 }
 
@@ -403,7 +403,7 @@ func DeveloperGenesisBlock(period uint64, faucet common.Address) *Genesis {
 			common.BytesToAddress([]byte{6}): {Balance: big.NewInt(1)}, // ECAdd
 			common.BytesToAddress([]byte{7}): {Balance: big.NewInt(1)}, // ECScalarMul
 			common.BytesToAddress([]byte{8}): {Balance: big.NewInt(1)}, // ECPairing
-			faucet:                           {Balance: new(big.Int).Sub(new(big.Int).Lsh(big.NewInt(1), 256), big.NewInt(9))},
+			faucet: {Balance: new(big.Int).Sub(new(big.Int).Lsh(big.NewInt(1), 256), big.NewInt(9))},
 		},
 	}
 }

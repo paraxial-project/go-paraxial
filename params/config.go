@@ -25,11 +25,11 @@ import (
 
 // Genesis hashes to enforce below configs on.
 var (
-	MainnetGenesisHash  = common.HexToHash("0xd4e56740f876aef8c010b86a40d5f56745a118d0906a34e69aec8c0db1cb8fa3")
-	TestnetGenesisHash  = common.HexToHash("0x41941023680923e0fe4d74a34bdac8141f2540e3ae90623718e47d66d1ca4a2d")
-	RinkebyGenesisHash  = common.HexToHash("0x6341fd3daf94b748c72ced5a5b26028f2474f5f00d824504e4fa37a75767e177")
-	CallistoGenesisHash = common.HexToHash("0x82270b80fc90beb005505a9ef95039639968a0e81b2904ad30128c93d713d2c4")
-	CallistoTestnetGenesisHash = common.HexToHash("0x49e84b0629f4197e87b065b8a815549e3449b0f5253ba3e2a5dd16f005d708f6")
+	MainnetGenesisHash         = common.HexToHash("0xd4e56740f876aef8c010b86a40d5f56745a118d0906a34e69aec8c0db1cb8fa3")
+	TestnetGenesisHash         = common.HexToHash("0x41941023680923e0fe4d74a34bdac8141f2540e3ae90623718e47d66d1ca4a2d")
+	RinkebyGenesisHash         = common.HexToHash("0x6341fd3daf94b748c72ced5a5b26028f2474f5f00d824504e4fa37a75767e177")
+	ParaxialGenesisHash        = common.HexToHash("0x82270b80fc90beb005505a9ef95039639968a0e81b2904ad30128c93d713d2c4")
+	ParaxialTestnetGenesisHash = common.HexToHash("0x49e84b0629f4197e87b065b8a815549e3449b0f5253ba3e2a5dd16f005d708f6")
 )
 
 var (
@@ -49,9 +49,9 @@ var (
 		Ethash:              new(EthashConfig),
 	}
 
-	// CallistoChainConfig is the chain parameters to run a node on the Callisto main network.
-	CallistoChainConfig = &ChainConfig{
-		ChainID:             big.NewInt(820),
+	// ParaxialChainConfig is the chain parameters to run a node on the Paraxial main network.
+	ParaxialChainConfig = &ChainConfig{
+		ChainID:             big.NewInt(14890), // will change b4 launch
 		HomesteadBlock:      big.NewInt(0),
 		DAOForkBlock:        nil,
 		DAOForkSupport:      false,
@@ -61,13 +61,13 @@ var (
 		EIP158Block:         big.NewInt(10),
 		ByzantiumBlock:      big.NewInt(20),
 		ConstantinopleBlock: nil,
-		CLOHF1Block:         big.NewInt(1400000),
+		PARAHF1Block:        big.NewInt(1400000), //  will change b4 launch
 		Ethash:              new(EthashConfig),
 	}
 
-	// CallistoChainTestnetConfig
-	CallistoChainTestnetConfig = &ChainConfig{
-		ChainID:             big.NewInt(20729),
+	// ParaxialChainTestnetConfig
+	ParaxialChainTestnetConfig = &ChainConfig{
+		ChainID:             big.NewInt(14891), // will change b4 launch
 		HomesteadBlock:      big.NewInt(0),
 		DAOForkBlock:        nil,
 		DAOForkSupport:      false,
@@ -77,7 +77,7 @@ var (
 		EIP158Block:         big.NewInt(10),
 		ByzantiumBlock:      big.NewInt(20),
 		ConstantinopleBlock: nil,
-		CLOHF1Block:         big.NewInt(1000),
+		PARAHF1Block:        big.NewInt(1000),
 		Ethash:              new(EthashConfig),
 	}
 
@@ -225,7 +225,7 @@ type ChainConfig struct {
 	PetersburgBlock     *big.Int `json:"petersburgBlock,omitempty"`     // Petersburg switch block (nil = same as Constantinople)
 	EWASMBlock          *big.Int `json:"ewasmBlock,omitempty"`          // EWASM switch block (nil = no fork, 0 = already activated)
 
-	CLOHF1Block *big.Int `json:"clohf1Block,omitempty"` // Callisto Hardfork 1 block
+	PARAHF1Block *big.Int `json:"clohf1Block,omitempty"` // Paraxial Hardfork 1 block
 
 	// Various consensus engines
 	Ethash *EthashConfig `json:"ethash,omitempty"`
@@ -262,18 +262,9 @@ func (c *ChainConfig) String() string {
 	default:
 		engine = "unknown"
 	}
-	return fmt.Sprintf("{ChainID: %v Homestead: %v DAO: %v DAOSupport: %v EIP150: %v EIP155: %v EIP158: %v Byzantium: %v Constantinople: %v  ConstantinopleFix: %v CLOHF1: %v Engine: %v}",
+	return fmt.Sprintf("{ChainID: %v PARAHF1: %v Engine: %v}",
 		c.ChainID,
-		c.HomesteadBlock,
-		c.DAOForkBlock,
-		c.DAOForkSupport,
-		c.EIP150Block,
-		c.EIP155Block,
-		c.EIP158Block,
-		c.ByzantiumBlock,
-		c.ConstantinopleBlock,
-		c.PetersburgBlock,
-		c.CLOHF1Block,
+		c.PARAHF1Block,
 		engine,
 	)
 }
@@ -325,8 +316,8 @@ func (c *ChainConfig) IsEWASM(num *big.Int) bool {
 	return isForked(c.EWASMBlock, num)
 }
 
-func (c *ChainConfig) IsCLOHF1(num *big.Int) bool {
-	return isForked(c.CLOHF1Block, num)
+func (c *ChainConfig) IsPARAHF1(num *big.Int) bool {
+	return isForked(c.PARAHF1Block, num)
 }
 
 // GasTable returns the gas table corresponding to the current phase (homestead or homestead reprice).

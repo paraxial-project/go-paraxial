@@ -31,9 +31,9 @@ import (
 )
 
 func TestDefaultGenesisBlock(t *testing.T) {
-	block := DefaultCallistoGenesisBlock().ToBlock(nil)
-	if block.Hash() != params.CallistoGenesisHash {
-		t.Errorf("wrong mainnet genesis hash, got %v, want %v", block.Hash(), params.CallistoGenesisHash)
+	block := DefaultParaxialGenesisBlock().ToBlock(nil)
+	if block.Hash() != params.ParaxialGenesisHash {
+		t.Errorf("wrong mainnet genesis hash, got %v, want %v", block.Hash(), params.ParaxialGenesisHash)
 	}
 	block = DefaultTestnetGenesisBlock().ToBlock(nil)
 	if block.Hash() != params.TestnetGenesisHash {
@@ -73,17 +73,17 @@ func TestSetupGenesis(t *testing.T) {
 			fn: func(db ethdb.Database) (*params.ChainConfig, common.Hash, error) {
 				return SetupGenesisBlock(db, nil)
 			},
-			wantHash:   params.CallistoGenesisHash,
-			wantConfig: params.CallistoChainConfig,
+			wantHash:   params.ParaxialGenesisHash,
+			wantConfig: params.ParaxialChainConfig,
 		},
 		{
 			name: "mainnet block in DB, genesis == nil",
 			fn: func(db ethdb.Database) (*params.ChainConfig, common.Hash, error) {
-				DefaultCallistoGenesisBlock().MustCommit(db)
+				DefaultParaxialGenesisBlock().MustCommit(db)
 				return SetupGenesisBlock(db, nil)
 			},
-			wantHash:   params.CallistoGenesisHash,
-			wantConfig: params.CallistoChainConfig,
+			wantHash:   params.ParaxialGenesisHash,
+			wantConfig: params.ParaxialChainConfig,
 		},
 		{
 			name: "custom block in DB, genesis == nil",
