@@ -42,6 +42,9 @@ var GoerliBootnodes = []string{
 // experimental RLPx v5 topic-discovery network.
 var DiscoveryV5Bootnodes = []string{}
 
-var ParaxialBootnodes = []string{}
+var ParaxialBootnodes = []string{
+	"enode://758cdb8ebff99759845f83de7370c1b38a6e2c4f47ed90e5335f71bc5207d1760f67f666c237165949806b74b113f9cea7ebf5761a0619835657d8faa9e04d4b@66.42.93.46:30303",
+	"enode://1572e84d67d7a6eedd9d6d75400c2cb24b0d4859c0b8e5c585a0872c4160682128e6faadfe4b468d62ed1ffce3cc8b79e8464ea5393a102dd14c212d7f4d6674@155.138.208.221:30303",
+}
 
 var ParaxialTestnetBootnodes = []string{}

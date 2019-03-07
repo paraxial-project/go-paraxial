@@ -61,7 +61,7 @@ func DefaultDataDir() string {
 		} else if runtime.GOOS == "windows" {
 			return filepath.Join(home, "AppData", "Roaming", "Paraxial")
 		} else {
-			return filepath.Join(home, ".callisto")
+			return filepath.Join(home, ".paraxial")
 		}
 	}
 	// As we cannot guess a stable location, return empty and handle later

@@ -225,7 +225,7 @@ type ChainConfig struct {
 	PetersburgBlock     *big.Int `json:"petersburgBlock,omitempty"`     // Petersburg switch block (nil = same as Constantinople)
 	EWASMBlock          *big.Int `json:"ewasmBlock,omitempty"`          // EWASM switch block (nil = no fork, 0 = already activated)
 
-	PARAHF1Block *big.Int `json:"clohf1Block,omitempty"` // Paraxial Hardfork 1 block
+	PARAHF1Block *big.Int `json:"parahf1Block,omitempty"` // Paraxial Hardfork 1 block
 
 	// Various consensus engines
 	Ethash *EthashConfig `json:"ethash,omitempty"`
