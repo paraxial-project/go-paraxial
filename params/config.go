@@ -28,7 +28,7 @@ var (
 	MainnetGenesisHash         = common.HexToHash("0xd4e56740f876aef8c010b86a40d5f56745a118d0906a34e69aec8c0db1cb8fa3")
 	TestnetGenesisHash         = common.HexToHash("0x41941023680923e0fe4d74a34bdac8141f2540e3ae90623718e47d66d1ca4a2d")
 	RinkebyGenesisHash         = common.HexToHash("0x6341fd3daf94b748c72ced5a5b26028f2474f5f00d824504e4fa37a75767e177")
-	ParaxialGenesisHash        = common.HexToHash("0x82270b80fc90beb005505a9ef95039639968a0e81b2904ad30128c93d713d2c4")
+	ParaxialGenesisHash        = common.HexToHash("0x5f7596593105373526535e746296f5bb7892bd64a9d86b54ed543e26f6b0a5ef") // change too block 0 hash
 	ParaxialTestnetGenesisHash = common.HexToHash("0x49e84b0629f4197e87b065b8a815549e3449b0f5253ba3e2a5dd16f005d708f6")
 )
 
@@ -52,16 +52,16 @@ var (
 	// ParaxialChainConfig is the chain parameters to run a node on the Paraxial main network.
 	ParaxialChainConfig = &ChainConfig{
 		ChainID:             big.NewInt(14890), // will change b4 launch
-		HomesteadBlock:      big.NewInt(0),
+		HomesteadBlock:      nil,
 		DAOForkBlock:        nil,
 		DAOForkSupport:      false,
 		EIP150Block:         big.NewInt(0),
 		EIP150Hash:          common.HexToHash("0x82270b80fc90beb005505a9ef95039639968a0e81b2904ad30128c93d713d2c4"),
-		EIP155Block:         big.NewInt(10),
-		EIP158Block:         big.NewInt(10),
-		ByzantiumBlock:      big.NewInt(20),
+		EIP155Block:         big.NewInt(0),
+		EIP158Block:         big.NewInt(0),
+		ByzantiumBlock:      nil,
 		ConstantinopleBlock: nil,
-		PARAHF1Block:        big.NewInt(1400000), //  will change b4 launch
+		PARAHF1Block:        big.NewInt(100), //  will change b4 launch
 		Ethash:              new(EthashConfig),
 	}
 

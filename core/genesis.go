@@ -321,9 +321,9 @@ func DefaultParaxialGenesisBlock() *Genesis {
 		Config:     params.ParaxialChainConfig,
 		ExtraData:  hexutil.MustDecode("0x0000000000000000000000000000000000000000000000000000000000000000"),
 		GasLimit:   10400000,
-		Difficulty: big.NewInt(524288),
+		Difficulty: big.NewInt(12107201),
 		Timestamp:  1519622213,
-		Nonce:      32,
+		Nonce:      42,
 		Coinbase:   common.HexToAddress("0xa54ee4a7ab23068529b7fec588ec3959e384a816"), // me
 		Mixhash:    common.HexToHash("0x0000000000000000000000000000000000000000000000000000000000000000"),
 		Alloc:      decodePrealloc(paraxialAllocData),
